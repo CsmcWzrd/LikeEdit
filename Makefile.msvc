@@ -1,0 +1,18 @@
+# Run from "x64 Native Tools Command Prompt for VS 2022": nmake /F Makefile.msvc
+!IFNDEF CONFIG
+CONFIG=Release
+!ENDIF
+!IF "$(CONFIG)" == "Debug"
+CFLAGS=/nologo /W4 /std:c11 /Od /Zi /MDd /D_CRT_SECURE_NO_WARNINGS /DUNICODE /D_UNICODE
+!ELSE
+CFLAGS=/nologo /W4 /std:c11 /O2 /MD /D_CRT_SECURE_NO_WARNINGS /DUNICODE /D_UNICODE
+!ENDIF
+all: LikeEdit.exe likeedit_tests.exe
+LikeEdit.exe: src\win_editor.c src\editor_core.c src\syntax.c src\editor_core.h src\syntax.h
+	cl $(CFLAGS) /Fe:LikeEdit.exe src\win_editor.c src\editor_core.c src\syntax.c
+likeedit_tests.exe: tests\test_core.c src\editor_core.c src\syntax.c src\editor_core.h src\syntax.h
+	cl $(CFLAGS) /Isrc /Fe:likeedit_tests.exe tests\test_core.c src\editor_core.c src\syntax.c
+check: likeedit_tests.exe
+	likeedit_tests.exe
+clean:
+	-del /Q LikeEdit.exe likeedit_tests.exe *.obj *.pdb *.ilk 2>NUL

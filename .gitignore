@@ -1,0 +1,11 @@
+/build/
+/out/
+/.vs/
+/x64/
+/Debug/
+/Release/
+*.obj
+*.pdb
+*.exe
+*.ilk
+likeedit_test_*.tmp
